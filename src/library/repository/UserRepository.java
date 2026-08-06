@@ -15,13 +15,13 @@ public class UserRepository {
         this.users = new HashMap<Integer, User>();
         this.nextId = 1;
     }
+
     public User add(String nick, String email, String password, String firstName, String lastName){
         User user = new User(nextId, nick, email, password, firstName, lastName);
         users.put(nextId, user);
         nextId++;
         return user;
     }
-
     public User add(String email, String password, String firstName, String lastName){
         return add(null, email, password, firstName, lastName);
     }
