@@ -57,6 +57,19 @@ public class BookService {
         return bookLoanRepository.add(bookId, userId, dueDate);
     }
 
+    //ZWROT KSIĄŻKI
+    public BookLoan returnBookLoan(int bookLoanId){
+        BookLoan bookLoan = bookLoanRepository.findById(bookLoanId);
+        if (bookLoan == null) {
+            throw new IllegalArgumentException("Niepoprawne id");
+        }
+        bookLoan.returnBook();
+        int bookId = bookLoan.getBookId();
+        Book book = bookRepository.findById(bookId);
+        book.markAsAvailable();
+        return bookLoan;
+    }
+
     //WALIDACJA
     private void validateNotBlank(String value, String fieldName){
         if(value == null || value.isBlank()){
