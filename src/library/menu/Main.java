@@ -7,6 +7,7 @@ import library.repository.BookLoanRepository;
 import library.repository.BookRepository;
 import library.repository.UserRepository;
 import library.service.BookService;
+import library.service.UserService;
 
 import java.util.List;
 import java.time.LocalDate;
@@ -17,10 +18,11 @@ public class Main {
         UserRepository userRepository = new UserRepository();
         BookLoanRepository bookLoanRepository = new BookLoanRepository();
         BookService bookService = new BookService(bookRepository, userRepository, bookLoanRepository);
+        UserService userService = new UserService(userRepository);
 
         bookService.addBook("Hobbit", "J.R.R. Tolkien", 1937, "Fantasy", "Klasyka fantasy");
         bookService.addBook("Diuna", "Frank Herbert", 1965, "Sci-Fi");
-        User user = userRepository.add("ala@gmail.com", "kotki", "Ala", "Tarnawska");
+        User user = userService.register("ala@gmail.com", "kocurki", "Ala", "Tarnawska");
         LocalDate dueDate = LocalDate.now().plusDays(14);
         BookLoan loan = bookService.borrowBook(1, user.getId(), dueDate);
         bookService.returnBookLoan(loan.getId());
