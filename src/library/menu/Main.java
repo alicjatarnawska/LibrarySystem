@@ -1,6 +1,7 @@
 package library.menu;
 
 import library.entities.Book;
+import library.entities.BookLoan;
 import library.entities.User;
 import library.repository.BookLoanRepository;
 import library.repository.BookRepository;
@@ -21,7 +22,9 @@ public class Main {
         bookService.addBook("Diuna", "Frank Herbert", 1965, "Sci-Fi");
         User user = userRepository.add("ala@gmail.com", "kotki", "Ala", "Tarnawska");
         LocalDate dueDate = LocalDate.now().plusDays(14);
-        bookService.borrowBook(1, user.getId(), dueDate);
+        BookLoan loan = bookService.borrowBook(1, user.getId(), dueDate);
+        bookService.returnBookLoan(loan.getId());
+
 
         List<Book> books = bookService.getAllBooks();
         for (Book book : books) {
