@@ -46,8 +46,8 @@ public class BookLoan {
         return dueDate;
     }
     public void extendDueDate(LocalDate dueDate) {
-        if(this.dueDate.isBefore(dueDate) || this.dueDate.isEqual(dueDate)) {
-            throw new IllegalArgumentException("Nowy termin zwrotu nie może być przed pierwottnym");
+        if(dueDate.isBefore(this.dueDate) || this.dueDate.isEqual(dueDate)) {
+            throw new IllegalArgumentException("Nowy termin zwrotu nie może być przed pierwotnym");
         }
         this.dueDate = dueDate;
     }
