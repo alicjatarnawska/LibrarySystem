@@ -1,13 +1,11 @@
 package library.menu;
 
-import library.entities.Book;
-import library.entities.BookLoan;
-import library.entities.Review;
-import library.entities.User;
+import library.entities.*;
 import library.repository.BookLoanRepository;
 import library.repository.BookRepository;
 import library.repository.ReviewRepository;
 import library.repository.UserRepository;
+import library.service.BookLoanService;
 import library.service.BookService;
 import library.service.ReviewService;
 import library.service.UserService;
@@ -24,24 +22,32 @@ public class Main {
         UserService userService = new UserService(userRepository);
         ReviewRepository reviewRepository = new ReviewRepository();
         ReviewService reviewService = new ReviewService(reviewRepository, bookRepository, userRepository);
+        BookLoanService bookLoanService = new BookLoanService(bookLoanRepository, userRepository);
 
         bookService.addBook("Hobbit", "J.R.R. Tolkien", 1937, "Fantasy", "Klasyka fantasy");
         bookService.addBook("Diuna", "Frank Herbert", 1965, "Sci-Fi");
         User user = userService.register("ala@gmail.com", "kocurki", "Ala", "Tarnawska");
         LocalDate dueDate = LocalDate.now().plusDays(14);
         BookLoan loan = bookService.borrowBook(1, user.getId(), dueDate);
-        bookService.returnBookLoan(loan.getId());
+        //bookService.returnBookLoan(loan.getId());
         Review review = reviewService.addReview(1, user.getId(), 4, "Nudna książka");
+        user.changeRole(Role.EMPLOYEE);
+        /*
         try {
             Review review2 = reviewService.addReview(1, user.getId(), 5, "Nudy");
         } catch (IllegalStateException e) {
             System.out.println("Błąd: " + e.getMessage());
         }
+        */
+
+        bookLoanService.extendDueDate(loan.getId(), user.getId(), LocalDate.now().plusDays(30));
+
 
         List<Book> books = bookService.getAllBooks();
         for (Book book : books) {
             System.out.println(book);
         }
         System.out.println(review);
+        System.out.println(loan);
     }
 }
